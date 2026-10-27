@@ -1,0 +1,6 @@
+X86 LB+array-now
+{ x=0; y=0; mx=0; my=0; ox=0; oy=0; }
+ P0          | P1          ;
+ MOV EAX,[x] | MOV EAX,[y] ;
+ MOV [y],$1  | MOV [x],$1  ;
+exists (0:EAX=1 /\ 1:EAX=1)

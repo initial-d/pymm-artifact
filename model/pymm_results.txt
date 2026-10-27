@@ -1,0 +1,12 @@
+shape  sc         ra         raw       
+SB     Never      Sometimes  Sometimes 
+MP     Never      Never      Sometimes 
+LB     Never      Never      Never     
+R      Never      Sometimes  Sometimes 
+2+2W   Never      Sometimes  Sometimes 
+IRIW   Never      Sometimes  Sometimes 
+WRC    Never      Never      Sometimes 
+### mixed
+mixed/MPmix_array-fix.litmus pymm=Never rc11=Never
+mixed/MPmix_array-now.litmus pymm=Never nonatomic-access-in-python-test rc11=Never *undef*
+mixed/MPmix_attrflag.litmus pymm=Never rc11=Never

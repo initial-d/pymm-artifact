@@ -1,0 +1,9 @@
+X86 SB+attrb-cf
+{ x=0; y=0; mx=0; my=0; ox=0; oy=0; }
+ P0            | P1            ;
+ MOV ESI,$1    | MOV ESI,$1    ;
+ XCHG [mx],ESI | XCHG [my],ESI ;
+ MOV [x],$1    | MOV [y],$1    ;
+ MOV [mx],$0   | MOV [my],$0   ;
+ MOV EAX,[y]   | MOV EAX,[x]   ;
+exists (0:EAX=0 /\ 1:EAX=0)

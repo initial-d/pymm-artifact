@@ -1,0 +1,59 @@
+== FT_ATOMIC_STORE_PTR_RELEASE
+Objects/unicodeobject.c:141:    FT_ATOMIC_STORE_PTR_RELEASE(_PyCompactUnicodeObject_CAST(op)->utf8, utf8);
+Objects/typeobject.c:3784:    FT_ATOMIC_STORE_PTR_RELEASE(*dictptr, Py_NewRef(value));
+Objects/typeobject.c:6005:        FT_ATOMIC_STORE_PTR_RELEASE(type->_spec_cache.init, init);
+Objects/typeobject.c:6029:        FT_ATOMIC_STORE_PTR_RELEASE(ht->_spec_cache.getitem, descriptor);
+Objects/codeobject.c:1614:    FT_ATOMIC_STORE_PTR_RELEASE(co->co_extra, new_co_extra);
+Objects/codeobject.c:1698:        FT_ATOMIC_STORE_PTR_RELEASE(old_co_extra->ce_extras[index], extra);
+Objects/listobject.c:240:    FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item, items);
+Objects/listobject.c:488:    FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item[i], newitem);
+Objects/listobject.c:520:    FT_ATOMIC_STORE_PTR_RELEASE(items[where], Py_NewRef(v));
+Objects/listobject.c:549:    FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item[len], newitem);
+Objects/listobject.c:875:    FT_ATOMIC_STORE_PTR_RELEASE(a->ob_item, NULL);
+Objects/listobject.c:1000:        FT_ATOMIC_STORE_PTR_RELEASE(item[ilow], Py_XNewRef(w));
+Objects/listobject.c:1120:        FT_ATOMIC_STORE_PTR_RELEASE(a->ob_item[i], Py_NewRef(v));
+Objects/listobject.c:1240:        FT_ATOMIC_STORE_PTR_RELEASE(dest[i], Py_NewRef(o));
+Objects/listobject.c:1297:            FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item[len], item);  // steals item ref
+Objects/listobject.c:1353:        FT_ATOMIC_STORE_PTR_RELEASE(*dest, key);
+Objects/listobject.c:1381:        FT_ATOMIC_STORE_PTR_RELEASE(*dest, obj);
+Objects/listobject.c:1413:        FT_ATOMIC_STORE_PTR_RELEASE(*dest, item);
+Objects/listobject.c:2949:    FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item, NULL);
+Objects/listobject.c:3166:    FT_ATOMIC_STORE_PTR_RELEASE(self->ob_item, saved_ob_item);
+Objects/dictobject.c:281:#define STORE_KEY(ep, key) FT_ATOMIC_STORE_PTR_RELEASE((ep)->me_key, key)
+Objects/dictobject.c:282:#define STORE_VALUE(ep, value) FT_ATOMIC_STORE_PTR_RELEASE((ep)->me_value, value)
+Objects/dictobject.c:283:#define STORE_SPLIT_VALUE(mp, idx, value) FT_ATOMIC_STORE_PTR_RELEASE(mp->ma_values->values[idx], value)
+Objects/dictobject.c:2002:    FT_ATOMIC_STORE_PTR_RELEASE(mp->ma_keys, newkeys);
+Objects/dictobject.c:2046:        FT_ATOMIC_STORE_PTR_RELEASE(values->values[i], NULL);
+Objects/dictobject.c:6896:    FT_ATOMIC_STORE_PTR_RELEASE(_PyObject_ManagedDictPointer(obj)->dict,
+Objects/dictobject.c:6994:            FT_ATOMIC_STORE_PTR_RELEASE(_PyObject_ManagedDictPointer(obj)->dict,
+Objects/dictobject.c:7021:    FT_ATOMIC_STORE_PTR_RELEASE(values->values[ix], Py_XNewRef(value));
+Objects/dictobject.c:7568:            FT_ATOMIC_STORE_PTR_RELEASE(_PyObject_ManagedDictPointer(obj)->dict,
+Objects/dictobject.c:7603:        FT_ATOMIC_STORE_PTR_RELEASE(*dictptr, dict);
+Objects/dictobject.c:7769:            FT_ATOMIC_STORE_PTR_RELEASE(interp->dict_state.watchers[i], callback);
+Objects/dictobject.c:7791:    FT_ATOMIC_STORE_PTR_RELEASE(interp->dict_state.watchers[watcher_id], NULL);
+Python/bytecodes.c:1120:            FT_ATOMIC_STORE_PTR_RELEASE(_PyList_ITEMS(list)[index],
+Python/bytecodes.c:2574:            FT_ATOMIC_STORE_PTR_RELEASE(*value_ptr, PyStackRef_AsPyObjectSteal(value));
+Python/bytecodes.c:2621:            FT_ATOMIC_STORE_PTR_RELEASE(ep->me_value, PyStackRef_AsPyObjectSteal(value));
+Python/bytecodes.c:2643:            FT_ATOMIC_STORE_PTR_RELEASE(*(PyObject **)addr, PyStackRef_AsPyObjectSteal(value));
+Python/structmember.c:316:        FT_ATOMIC_STORE_PTR_RELEASE(*(PyObject **)addr, Py_XNewRef(v));
+Python/optimizer_analysis.c:99:    FT_ATOMIC_STORE_PTR_RELEASE(
+Include/internal/pycore_cell.h:24:    FT_ATOMIC_STORE_PTR_RELEASE(cell->ob_ref, value);
+== FT_ATOMIC_LOAD_PTR_ACQUIRE
+Objects/object.c:1629:            dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*dictptr);
+Objects/object.c:1743:            dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*dictptr);
+Objects/codeobject.c:1660:    _PyCodeObjectExtra *co_extra = FT_ATOMIC_LOAD_PTR_ACQUIRE(co->co_extra);
+Objects/codeobject.c:1662:        *extra = FT_ATOMIC_LOAD_PTR_ACQUIRE(co_extra->ce_extras[index]);
+Objects/unicodeobject.c:125:    return FT_ATOMIC_LOAD_PTR_ACQUIRE(_PyCompactUnicodeObject_CAST(op)->utf8);
+Objects/dictobject.c:7585:    PyObject *dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*dictptr);
+Objects/dictobject.c:7819:            PyDict_WatchCallback cb = FT_ATOMIC_LOAD_PTR_ACQUIRE(
+Python/bytecodes.c:1025:            PyObject *getitem_o = FT_ATOMIC_LOAD_PTR_ACQUIRE(ht->_spec_cache.getitem);
+Python/bytecodes.c:1800:            PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
+Python/bytecodes.c:1809:            PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
+Python/bytecodes.c:1829:            PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
+Python/bytecodes.c:2352:            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_ACQUIRE(*value_ptr);
+Python/bytecodes.c:2379:            PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
+Python/bytecodes.c:3683:            PyObject *dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*(PyObject **)ptr);
+Python/bytecodes.c:4155:            PyFunctionObject *init_func = (PyFunctionObject *)FT_ATOMIC_LOAD_PTR_ACQUIRE(cls->_spec_cache.init);
+Python/specialize.c:1644:            PyObject *dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*addr);
+Include/internal/pycore_object.h:13:#include "pycore_pyatomic_ft_wrappers.h" // FT_ATOMIC_LOAD_PTR_ACQUIRE()
+Include/internal/pycore_object.h:939:    return (PyDictObject *)FT_ATOMIC_LOAD_PTR_ACQUIRE(dorv->dict);

@@ -1,0 +1,21 @@
+# otool -tv build-*/python.exe (clang, Apple M5), 2026-10-25
+build     ldapr  ldar
+arm-base  328    248
+arm-cf    328    252
+arm-fix   250    331
+
+# 2026-10-25 late: added base+SC build (CFLAGS=-DPYMM_SC_STORE, stock CAS unlock)
+# otool -tv build-arm-$b/python.exe | grep -cw {ldapr,ldar}; grep -ciw casalb
+build     ldapr  ldar  casalb
+arm-base  328    248   2103
+arm-cf    328    252   984
+arm-fix   250    331   984
+arm-sc    250    327   2103
+
+# 2026-10-26: after extended patch (FT_ATOMIC_LOAD_PTR_MANAGED at bytecodes.c:1814/1833/2384), sc+fix rebuilt
+# otool -tv build-arm-$b/python.exe | grep -cw {ldapr,ldar}
+build     ldapr  ldar
+arm-base  328    248
+arm-cf    328    252
+arm-fix   250    334
+arm-sc    250    330

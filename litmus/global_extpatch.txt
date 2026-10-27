@@ -1,0 +1,17 @@
+# 2026-10-26 extended patch (FT_ATOMIC_LOAD_PTR_MANAGED); fix/sc rebuilt; litmus_global.py <T> 1000000 3
+[arm base] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=568610 7.7s
+[arm base] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=27 7.8s
+[arm cf] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1020858 2.1s
+[arm cf] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=16 2.1s
+[arm fix] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1104740 2.1s
+[arm fix] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=19 2.1s
+[x86 base] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=318742 12.9s
+[x86 base] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=48 14.0s
+[x86 cf] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1052037 2.5s
+[x86 cf] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=90 2.7s
+[x86 fix] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=650057 2.5s
+[x86 fix] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=31 2.6s
+# regression: litmus.py SB <kind> 2000000 3 on extended fix
+[x86 fix-ext] 3.14.9 gil=False SB    list  n=  6000000 forbidden(0, 0)=      0  (0.00e+00)  {(0, 1): 2603073, (1, 0): 2616277, (1, 1): 780650}  3.8s
+[x86 fix-ext] 3.14.9 gil=False SB    attrb n=  6000000 forbidden(0, 0)=      0  (0.00e+00)  {(0, 1): 2854150, (1, 0): 3108982, (1, 1): 36868}  4.8s
+[x86 fix-ext] 3.14.9 gil=False SB    slotb n=  6000000 forbidden(0, 0)=      0  (0.00e+00)  {(0, 1): 2588304, (1, 0): 3247003, (1, 1): 164693}  5.0s

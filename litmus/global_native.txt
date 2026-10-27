@@ -1,0 +1,7 @@
+# 2026-10-26 native Xeon, extended patch; litmus_global.py <T> 1000000 3
+[native base] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=752304 10.8s
+[native base] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=78769 9.0s
+[native cf] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1224040 3.2s
+[native cf] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=137 3.1s
+[native fix] 3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1066865 3.9s
+[native fix] 3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=741 3.4s

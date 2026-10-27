@@ -1,0 +1,13 @@
+AArch64 SB+global-fix2
+{
+0:X1=x; 0:X2=y; 0:X3=mx; 0:X4=my; 0:X5=ox; 0:X6=oy; 1:X1=x; 1:X2=y; 1:X3=mx; 1:X4=my; 1:X5=ox; 1:X6=oy;
+}
+ P0                 | P1                 ;
+ MOV W7,#0          | MOV W7,#0          ;
+ MOV W0,#1          | MOV W0,#1          ;
+ MOV W11,#1         | MOV W11,#1         ;
+ SWPAL W11,W12,[X3] | SWPAL W11,W12,[X4] ;
+ STLR W0,[X1]       | STLR W0,[X2]       ;
+ SWPAL W7,W12,[X3]  | SWPAL W7,W12,[X4]  ;
+ LDAR W20,[X2]      | LDAR W20,[X1]      ;
+exists (0:X20=0 /\ 1:X20=0)

@@ -1,0 +1,10 @@
+
+### c11 under rc11.cat
+shape      list-base       list-cf     attr-base       attr-cf    attrb-base      attrb-cf     array-now     array-fix      proposed
+SB             ALLOW         ALLOW         ALLOW         ALLOW         ALLOW         ALLOWALLOW[*undef*]         ALLOW        forbid
+MP            forbid        forbid        forbid        forbid        forbid        forbidALLOW[*undef*]         ALLOW        forbid
+LB            forbid        forbid        forbid        forbid        forbid        forbidforbid[*undef*]        forbid        forbid
+R             forbid         ALLOW       TIMEOUT         ALLOW        forbid         ALLOWALLOW[*undef*]         ALLOW        forbid
+2+2W         TIMEOUT         ALLOW       TIMEOUT       TIMEOUT       TIMEOUT         ALLOWALLOW[*undef*]         ALLOW        forbid
+IRIW           ALLOW         ALLOW       TIMEOUT         ALLOW         ALLOW         ALLOWALLOW[*undef*]         ALLOW        forbid
+WRC           forbid        forbid        forbid        forbid        forbid        forbidALLOW[*undef*]         ALLOW        forbid

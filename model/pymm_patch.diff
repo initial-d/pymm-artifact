@@ -1,0 +1,243 @@
+diff --git a/Include/cpython/lock.h b/Include/cpython/lock.h
+index 63886fc..dc1c5f2 100644
+--- a/Include/cpython/lock.h
++++ b/Include/cpython/lock.h
+@@ -59,9 +59,15 @@ static inline void
+ _PyMutex_Unlock(PyMutex *m)
+ {
+     uint8_t expected = _Py_LOCKED;
++#ifdef PYMM_RELEASE_UNLOCK
++    /* Counterfactual: textbook spinlock unlock = a single release store (no RMW). */
++    (void)expected;
++    __atomic_store_n(&m->_bits, (uint8_t)0, __ATOMIC_RELEASE);
++#else
+     if (!_Py_atomic_compare_exchange_uint8(&m->_bits, &expected, _Py_UNLOCKED)) {
+         PyMutex_Unlock(m);
+     }
++#endif
+ }
+ #define PyMutex_Unlock _PyMutex_Unlock
+ 
+diff --git a/Include/internal/pycore_pyatomic_ft_wrappers.h b/Include/internal/pycore_pyatomic_ft_wrappers.h
+index bcb9e01..6e47f46 100644
+--- a/Include/internal/pycore_pyatomic_ft_wrappers.h
++++ b/Include/internal/pycore_pyatomic_ft_wrappers.h
+@@ -29,14 +29,26 @@ extern "C" {
+     _Py_atomic_load_ssize_relaxed(&value)
+ #define FT_ATOMIC_STORE_PTR(value, new_value) \
+     _Py_atomic_store_ptr(&value, new_value)
++#ifdef PYMM_SC_STORE
++/* PyMM fix: an acquire load may pass an earlier seq_cst store (SB); use seq_cst. */
++#define FT_ATOMIC_LOAD_PTR_ACQUIRE(value) _Py_atomic_load_ptr(&value)
++#else
+ #define FT_ATOMIC_LOAD_PTR_ACQUIRE(value) \
+     _Py_atomic_load_ptr_acquire(&value)
++#endif
+ #define FT_ATOMIC_LOAD_PTR_CONSUME(value) \
+     _Py_atomic_load_ptr_consume(&value)
+ #define FT_ATOMIC_LOAD_UINTPTR_ACQUIRE(value) \
+     _Py_atomic_load_uintptr_acquire(&value)
+ #define FT_ATOMIC_LOAD_PTR_RELAXED(value) \
+     _Py_atomic_load_ptr_relaxed(&value)
++#ifdef PYMM_SC_STORE
++/* PyMM fix: specialised loads of module globals/builtins and module attributes
++   read me_value relaxed and skip the re-read for immortal/deferred values; use seq_cst. */
++#define FT_ATOMIC_LOAD_PTR_MANAGED(value) _Py_atomic_load_ptr(&value)
++#else
++#define FT_ATOMIC_LOAD_PTR_MANAGED(value) _Py_atomic_load_ptr_relaxed(&value)
++#endif
+ #define FT_ATOMIC_LOAD_UINT8(value) \
+     _Py_atomic_load_uint8(&value)
+ #define FT_ATOMIC_STORE_UINT8(value, new_value) \
+@@ -55,8 +67,14 @@ extern "C" {
+     _Py_atomic_load_ulong_relaxed(&value)
+ #define FT_ATOMIC_STORE_PTR_RELAXED(value, new_value) \
+     _Py_atomic_store_ptr_relaxed(&value, new_value)
++#ifdef PYMM_SC_STORE
++/* PyMM fix: stores to Python-visible managed slots are seq_cst. */
++#define FT_ATOMIC_STORE_PTR_RELEASE(value, new_value) \
++    _Py_atomic_store_ptr(&value, new_value)
++#else
+ #define FT_ATOMIC_STORE_PTR_RELEASE(value, new_value) \
+     _Py_atomic_store_ptr_release(&value, new_value)
++#endif
+ #define FT_ATOMIC_STORE_UINTPTR_RELEASE(value, new_value) \
+     _Py_atomic_store_uintptr_release(&value, new_value)
+ #define FT_ATOMIC_STORE_SSIZE_RELAXED(value, new_value) \
+diff --git a/Python/bytecodes.c b/Python/bytecodes.c
+index e17c778..415890f 100644
+--- a/Python/bytecodes.c
++++ b/Python/bytecodes.c
+@@ -1811,7 +1811,7 @@ dummy_func(
+             assert(DK_IS_UNICODE(keys));
+             PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+             assert(index < DK_SIZE(keys));
+-            PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+             DEOPT_IF(res_o == NULL);
+             #if Py_GIL_DISABLED
+             int increfed = _Py_TryIncrefCompareStackRef(&entries[index].me_value, res_o, &res);
+@@ -1830,7 +1830,7 @@ dummy_func(
+             DEOPT_IF(FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != version);
+             assert(DK_IS_UNICODE(keys));
+             PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+-            PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+             DEOPT_IF(res_o == NULL);
+             #if Py_GIL_DISABLED
+             int increfed = _Py_TryIncrefCompareStackRef(&entries[index].me_value, res_o, &res);
+@@ -2381,7 +2381,7 @@ dummy_func(
+             assert(keys->dk_kind == DICT_KEYS_UNICODE);
+             assert(index < FT_ATOMIC_LOAD_SSIZE_RELAXED(keys->dk_nentries));
+             PyDictUnicodeEntry *ep = DK_UNICODE_ENTRIES(keys) + index;
+-            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_RELAXED(ep->me_value);
++            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+             DEOPT_IF(attr_o == NULL);
+             #ifdef Py_GIL_DISABLED
+             int increfed = _Py_TryIncrefCompareStackRef(&ep->me_value, attr_o, &attr);
+diff --git a/Python/executor_cases.c.h b/Python/executor_cases.c.h
+index 0312157..442a1fc 100644
+--- a/Python/executor_cases.c.h
++++ b/Python/executor_cases.c.h
+@@ -2426,7 +2426,7 @@
+             assert(DK_IS_UNICODE(keys));
+             PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+             assert(index < DK_SIZE(keys));
+-            PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+             if (res_o == NULL) {
+                 UOP_STAT_INC(uopcode, miss);
+                 JUMP_TO_JUMP_TARGET();
+@@ -2463,7 +2463,7 @@
+             }
+             assert(DK_IS_UNICODE(keys));
+             PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+-            PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+             if (res_o == NULL) {
+                 UOP_STAT_INC(uopcode, miss);
+                 JUMP_TO_JUMP_TARGET();
+@@ -3332,7 +3332,7 @@
+             assert(keys->dk_kind == DICT_KEYS_UNICODE);
+             assert(index < FT_ATOMIC_LOAD_SSIZE_RELAXED(keys->dk_nentries));
+             PyDictUnicodeEntry *ep = DK_UNICODE_ENTRIES(keys) + index;
+-            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_RELAXED(ep->me_value);
++            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+             if (attr_o == NULL) {
+                 UOP_STAT_INC(uopcode, miss);
+                 JUMP_TO_JUMP_TARGET();
+diff --git a/Python/generated_cases.c.h b/Python/generated_cases.c.h
+index 6269016..580d075 100644
+--- a/Python/generated_cases.c.h
++++ b/Python/generated_cases.c.h
+@@ -8514,7 +8514,7 @@
+                 assert(keys->dk_kind == DICT_KEYS_UNICODE);
+                 assert(index < FT_ATOMIC_LOAD_SSIZE_RELAXED(keys->dk_nentries));
+                 PyDictUnicodeEntry *ep = DK_UNICODE_ENTRIES(keys) + index;
+-                PyObject *attr_o = FT_ATOMIC_LOAD_PTR_RELAXED(ep->me_value);
++                PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+                 if (attr_o == NULL) {
+                     UPDATE_MISS_STATS(LOAD_ATTR);
+                     assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+@@ -9428,7 +9428,7 @@
+                 }
+                 assert(DK_IS_UNICODE(keys));
+                 PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+-                PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++                PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+                 if (res_o == NULL) {
+                     UPDATE_MISS_STATS(LOAD_GLOBAL);
+                     assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+@@ -9495,7 +9495,7 @@
+                 assert(DK_IS_UNICODE(keys));
+                 PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(keys);
+                 assert(index < DK_SIZE(keys));
+-                PyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
++                PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+                 if (res_o == NULL) {
+                     UPDATE_MISS_STATS(LOAD_GLOBAL);
+                     assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+diff --git a/Python/lock.c b/Python/lock.c
+index cc5da8d..728bb49 100644
+--- a/Python/lock.c
++++ b/Python/lock.c
+@@ -6,6 +6,10 @@
+ #include "pycore_parking_lot.h"
+ #include "pycore_semaphore.h"
+ #include "pycore_time.h"          // _PyTime_Add()
++#ifdef PYMM_RELEASE_UNLOCK
++#include "pycore_pystate.h"
++#include <unistd.h>
++#endif
+ 
+ #ifdef MS_WINDOWS
+ #  ifndef WIN32_LEAN_AND_MEAN
+@@ -62,6 +66,50 @@ _PyMutex_LockTimed(PyMutex *m, PyTime_t timeout, _PyLockFlags flags)
+         return PY_LOCK_FAILURE;
+     }
+ 
++#ifdef PYMM_RELEASE_UNLOCK
++    /* Counterfactual spinlock: never park, so _Py_HAS_PARKED is never set and the
++       release-store unlock below is a correct mutex. Detach while backing off so that
++       stop-the-world requests are not blocked (mirrors _PySemaphore_Wait). */
++    {
++        PyTime_t t0, tnow;
++        (void)PyTime_MonotonicRaw(&t0);
++        PyTime_t deadline = timeout > 0 ? _PyTime_Add(t0, timeout) : 0;
++        int spins = 0;
++        for (;;) {
++            uint8_t cur = _Py_atomic_load_uint8_relaxed(&m->_bits);
++            if ((cur & _Py_LOCKED) == 0 &&
++                _Py_atomic_compare_exchange_uint8(&m->_bits, &cur, cur | _Py_LOCKED)) {
++                return PY_LOCK_ACQUIRED;
++            }
++            if (timeout > 0) {
++                (void)PyTime_MonotonicRaw(&tnow);
++                if (tnow >= deadline) {
++                    return PY_LOCK_FAILURE;
++                }
++            }
++            if (++spins < 64) {
++                _Py_yield();
++                continue;
++            }
++            spins = 0;
++            PyThreadState *tstate = NULL;
++            if (flags & _PY_LOCK_DETACH) {
++                tstate = _PyThreadState_GET();
++                if (tstate && _PyThreadState_IsAttached(tstate)) {
++                    PyEval_ReleaseThread(tstate);
++                }
++                else {
++                    tstate = NULL;
++                }
++            }
++            usleep(20);
++            if (tstate) {
++                PyEval_AcquireThread(tstate);
++            }
++        }
++    }
++#endif
++
+     PyTime_t now;
+     // silently ignore error: cannot report error to the caller
+     (void)PyTime_MonotonicRaw(&now);
+@@ -162,6 +210,17 @@ mutex_unpark(void *arg, void *park_arg, int has_more_waiters)
+ int
+ _PyMutex_TryUnlock(PyMutex *m)
+ {
++#ifdef PYMM_RELEASE_UNLOCK
++    {
++        uint8_t cur = _Py_atomic_load_uint8_relaxed(&m->_bits);
++        if ((cur & _Py_LOCKED) == 0) {
++            return -1;
++        }
++        assert((cur & _Py_HAS_PARKED) == 0);
++        __atomic_store_n(&m->_bits, (uint8_t)0, __ATOMIC_RELEASE);
++        return 0;
++    }
++#endif
+     uint8_t v = _Py_atomic_load_uint8(&m->_bits);
+     for (;;) {
+         if ((v & _Py_LOCKED) == 0) {

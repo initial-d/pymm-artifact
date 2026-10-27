@@ -1,0 +1,15 @@
+C 2+2W+array-now
+
+{ x=0; y=0; }
+
+P0 (int* x, int* y) {
+  *x = 1;
+  *y = 2;
+}
+
+P1 (int* x, int* y) {
+  *y = 1;
+  *x = 2;
+}
+
+exists ([x]=1 /\ [y]=1)

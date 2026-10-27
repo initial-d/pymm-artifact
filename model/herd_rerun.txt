@@ -1,0 +1,9 @@
+c11/IRIW_attr-base.litmus | rc11.cat | Observation IRIW+attr-base Always 1 0 | 43s
+c11/2+2W_attr-cf.litmus | rc11.cat | Observation 2+2W+attr-cf Always 1 0 | 179s
+c11/R_attr-base.litmus | rc11.cat | Observation R+attr-base Never 0 0 | 500s
+x86/2+2W_list-base.litmus | x86tso.cat | Observation 2+2W+list-base Never 0 0 | 798s
+x86/2+2W_attrb-base.litmus | x86tso.cat | Observation 2+2W+attrb-base Never 0 0 | 819s
+c11/2+2W_attrb-base.litmus | rc11.cat | Observation 2+2W+attrb-base Never 0 0 | 10141s
+c11/2+2W_list-base.litmus | rc11.cat | Observation 2+2W+list-base Never 0 0 | 10148s
+aarch64/R_attr-base.litmus | aarch64.cat | Observation R+attr-base Never 0 0 | 10427s
+x86/2+2W_attr-base.litmus | x86tso.cat | Observation 2+2W+attr-base Never 0 0 | 44169s

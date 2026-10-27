@@ -1,0 +1,7 @@
+
+### aarch64 under aarch64.cat
+shape      list-base       list-cf     attr-base       attr-cf    attrb-base      attrb-cf     array-now      proposed
+SB            forbid        forbid        forbid        forbid        forbid         ALLOW         ALLOW        forbid
+MP            forbid        forbid        forbid        forbid        forbid        forbid         ALLOW        forbid
+LB            forbid        forbid        forbid        forbid        forbid        forbid         ALLOW        forbid
+R             forbid        forbid       TIMEOUT        forbid        forbid         ALLOW         ALLOW        forbid

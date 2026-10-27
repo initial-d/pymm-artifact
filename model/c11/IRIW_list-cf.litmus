@@ -1,0 +1,27 @@
+C IRIW+list-cf
+
+{ x=0; y=0; mx=0; my=0; ox=0; oy=0; }
+
+P0 (atomic_int* x, atomic_int* y, atomic_int* mx, atomic_int* my, atomic_int* ox, atomic_int* oy) {
+  atomic_exchange_explicit(mx, 1, memory_order_seq_cst);
+  atomic_store_explicit(x, 1, memory_order_release);
+  atomic_store_explicit(mx, 0, memory_order_release);
+}
+
+P1 (atomic_int* x, atomic_int* y, atomic_int* mx, atomic_int* my, atomic_int* ox, atomic_int* oy) {
+  atomic_exchange_explicit(my, 1, memory_order_seq_cst);
+  atomic_store_explicit(y, 1, memory_order_release);
+  atomic_store_explicit(my, 0, memory_order_release);
+}
+
+P2 (atomic_int* x, atomic_int* y, atomic_int* mx, atomic_int* my, atomic_int* ox, atomic_int* oy) {
+  int r0 = atomic_load_explicit(x, memory_order_seq_cst);
+  int r1 = atomic_load_explicit(y, memory_order_seq_cst);
+}
+
+P3 (atomic_int* x, atomic_int* y, atomic_int* mx, atomic_int* my, atomic_int* ox, atomic_int* oy) {
+  int r0 = atomic_load_explicit(y, memory_order_seq_cst);
+  int r1 = atomic_load_explicit(x, memory_order_seq_cst);
+}
+
+exists (2:r0=1 /\ 2:r1=0 /\ 3:r0=1 /\ 3:r1=0)

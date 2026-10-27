@@ -1,0 +1,68 @@
+digraph G {
+
+
+/* legend */
+label="Test SB+list-cf, Generic(TSO)";
+
+
+/* init events */
+eiid10 [label="k: W[y]=0\lInit", shape="box", color="blue"];
+eiid11 [label="l: W[x]=0\lInit", shape="box", color="blue"];
+eiid12 [label="m: W[oy]=0\lInit", shape="box", color="blue"];
+eiid13 [label="n: W[ox]=0\lInit", shape="box", color="blue"];
+eiid14 [label="o: W[my]=0\lInit", shape="box", color="blue"];
+eiid15 [label="p: W[mx]=0\lInit", shape="box", color="blue"];
+
+/* the unlocked events */
+subgraph cluster_proc0 { rank=sink; label = "Thread 0"; color=magenta; shape=box;
+eiid0 [label="a: R[mx]*=0 (data)\lproc:P0 poi:1\lXCHG [mx],ESI", shape="box", color="blue"];
+eiid1 [label="b: W[mx]*=1\lproc:P0 poi:1\lXCHG [mx],ESI", shape="box", color="blue"];
+eiid2 [label="c: W[x]=1\lproc:P0 poi:2\lMOV [x],1", shape="box", color="blue"];
+eiid3 [label="d: W[mx]=0\lproc:P0 poi:3\lMOV [mx],0", shape="box", color="blue"];
+eiid4 [label="e: R[y]=0\lproc:P0 poi:4\lMOV EAX,[y]", shape="box", color="blue"];
+}
+subgraph cluster_proc1 { rank=sink; label = "Thread 1"; color=magenta; shape=box;
+eiid5 [label="f: R[my]*=0 (data)\lproc:P1 poi:1\lXCHG [my],ESI", shape="box", color="blue"];
+eiid6 [label="g: W[my]*=1\lproc:P1 poi:1\lXCHG [my],ESI", shape="box", color="blue"];
+eiid7 [label="h: W[y]=1\lproc:P1 poi:2\lMOV [y],1", shape="box", color="blue"];
+eiid8 [label="i: W[my]=0\lproc:P1 poi:3\lMOV [my],0", shape="box", color="blue"];
+eiid9 [label="j: R[x]=0\lproc:P1 poi:4\lMOV EAX,[x]", shape="box", color="blue"];
+}
+
+/* the intra_causality_data edges */
+
+
+/* the intra_causality_control edges */
+eiid0 -> eiid1 [label="iico_ctrl", color="grey", fontcolor="grey"];
+eiid5 -> eiid6 [label="iico_ctrl", color="grey", fontcolor="grey"];
+
+/* the poi edges */
+eiid1 -> eiid2 [label="po", color="black", fontcolor="black"];
+eiid2 -> eiid3 [label="po", color="black", fontcolor="black"];
+eiid3 -> eiid4 [label="po", color="black", fontcolor="black"];
+eiid6 -> eiid7 [label="po", color="black", fontcolor="black"];
+eiid7 -> eiid8 [label="po", color="black", fontcolor="black"];
+eiid8 -> eiid9 [label="po", color="black", fontcolor="black"];
+/* the rfmap edges */
+eiid15 -> eiid0 [label="rf", color="red", fontcolor="red"];
+eiid10 -> eiid4 [label="rf", color="red", fontcolor="red"];
+eiid14 -> eiid5 [label="rf", color="red", fontcolor="red"];
+eiid11 -> eiid9 [label="rf", color="red", fontcolor="red"];
+
+
+/* The viewed-before edges */
+eiid1 -> eiid4 [label="implied", color="darkgreen", fontcolor="darkgreen"];
+eiid6 -> eiid9 [label="implied", color="darkgreen", fontcolor="darkgreen"];
+eiid0 -> eiid1 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid0 -> eiid3 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid4 -> eiid7 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid5 -> eiid6 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid5 -> eiid8 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid9 -> eiid2 [label="fr", color="#ffa040", fontcolor="#ffa040"];
+eiid1 -> eiid3 [label="co", color="blue", fontcolor="blue"];
+eiid6 -> eiid8 [label="co", color="blue", fontcolor="blue"];
+eiid10 -> eiid7 [label="co", color="blue", fontcolor="blue"];
+eiid11 -> eiid2 [label="co", color="blue", fontcolor="blue"];
+eiid14 -> eiid6 [label="co", color="blue", fontcolor="blue"];
+eiid15 -> eiid1 [label="co", color="blue", fontcolor="blue"];
+}

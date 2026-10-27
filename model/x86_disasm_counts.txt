@@ -1,0 +1,15 @@
+# otool -tv build-x86-$b/python.exe (Apple clang, x86_64 under Rosetta 2), 2026-10-25
+# xchg    = otool -tv ... | grep -cE '\bxchg[bwlq]?\b'  (seq_cst stores compile to xchg; excludes cmpxchg)
+# cmpxchg = otool -tv ... | grep -cE 'cmpxchg'
+build     xchg  cmpxchg
+x86-base   329  2505
+x86-cf     331  1519
+x86-fix    408  1519
+x86-sc     404  2505
+
+# 2026-10-26: after extended patch; xchgq = 64-bit (pointer) xchg only: otool -tv ... | grep -cE 'xchgq'
+build     xchg  xchgq
+x86-base  329   194
+x86-cf    331   196
+x86-fix   408   273
+x86-sc    404   269

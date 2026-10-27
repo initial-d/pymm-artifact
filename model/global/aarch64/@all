@@ -1,0 +1,15 @@
+SB_global-base.litmus
+SB_global-fix.litmus
+SB_global-fixcf.litmus
+SB_global-fix2.litmus
+SB_global-fix2cf.litmus
+MP_global-base.litmus
+MP_global-fix.litmus
+MP_global-fixcf.litmus
+MP_global-fix2.litmus
+MP_global-fix2cf.litmus
+R_global-base.litmus
+R_global-fix.litmus
+R_global-fixcf.litmus
+R_global-fix2.litmus
+R_global-fix2cf.litmus

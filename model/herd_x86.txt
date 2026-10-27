@@ -1,0 +1,8 @@
+
+### x86 under x86tso.cat
+shape      list-base       list-cf     attr-base       attr-cf    attrb-base      attrb-cf     array-now      proposed
+SB            forbid         ALLOW        forbid        forbid        forbid         ALLOW         ALLOW        forbid
+MP            forbid        forbid        forbid        forbid        forbid        forbid        forbid        forbid
+LB            forbid        forbid        forbid        forbid        forbid        forbid        forbid        forbid
+R             forbid         ALLOW        forbid        forbid        forbid         ALLOW         ALLOW        forbid
+2+2W         TIMEOUT        forbid       TIMEOUT        forbid           ERR        forbid        forbid        forbid

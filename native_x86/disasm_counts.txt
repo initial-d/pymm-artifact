@@ -1,0 +1,13 @@
+# dev05, Xeon E5-2620 v3, gcc 11.4; objdump -d build-*/python, measured 2026-10-25
+build     xchg   lock_cmpxchg
+base      2913   2692
+cf        2933   1597    # unlock CAS removed (inlined unlock sites)
+fix       3019   1597    # +86 xchg vs cf = PYMM_SC_STORE seq_cst stores
+base _PyMutex_TryUnlock: lock cmpxchg %dl,(%rdi)
+
+# 2026-10-26: fix and sc rebuilt with extended patch (FT_ATOMIC_LOAD_PTR_MANAGED); pre-patch files in ~/pymm/pre_ext_patch_backup.tgz
+build     xchg   lock_cmpxchg
+base      2913   2692
+cf        2933   1597
+fix       3018   1597    # +85 vs cf
+sc        2991   2692

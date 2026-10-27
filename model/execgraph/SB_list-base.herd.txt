@@ -1,0 +1,13 @@
+Test SB+list-base Allowed
+States 3
+0:EAX=0; 1:EAX=1;
+0:EAX=1; 1:EAX=0;
+0:EAX=1; 1:EAX=1;
+No
+Witnesses
+Positive: 0 Negative: 3
+Condition exists (0:EAX=0 /\ 1:EAX=0)
+Observation SB+list-base Never 0 3
+Time SB+list-base 0.03
+Hash=799e6ebdd25fbb60c31f09c04fd5b745
+

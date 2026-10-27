@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+build-*/
+Python-3.14.9/
+figs/*.pdf
+perf/pyperf/bm/
+perf/pyperf/lib/
+*.tex

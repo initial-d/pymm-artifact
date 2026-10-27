@@ -1,0 +1,84 @@
+FAIL arm bm_2to3: subprocess.CalledProcessError: Command '['/Users/duyimin/paper_work/type_system/nonllm/perf/pyperf/../../build-arm-base/python.exe', '-m', 'pip', 'install', '/Users/duyimin/paper_work/type_system/nonllm/perf/pyperf/bm/bm_2to3/vendor']' returned non-zero exit status 1.
+FAIL x86 bm_2to3: subprocess.CalledProcessError: Command '['/Users/duyimin/paper_work/type_system/nonllm/perf/pyperf/../../build-x86-base/python.exe', '-m', 'pip', 'install', '/Users/duyimin/paper_work/type_system/nonllm/perf/pyperf/bm/bm_2to3/vendor']' returned non-zero exit status 1.
+OK bm_async_generators
+FAIL arm bm_async_tree: ValueError: badly formed help string
+FAIL x86 bm_async_tree: ValueError: badly formed help string
+FAIL arm bm_asyncio_tcp: ModuleNotFoundError: No module named '_ssl'
+FAIL x86 bm_asyncio_tcp: ModuleNotFoundError: No module named '_ssl'
+FAIL arm bm_asyncio_websockets: ModuleNotFoundError: No module named 'websockets'
+FAIL x86 bm_asyncio_websockets: ModuleNotFoundError: No module named 'websockets'
+FAIL arm bm_chameleon: ModuleNotFoundError: No module named 'chameleon'
+FAIL x86 bm_chameleon: ModuleNotFoundError: No module named 'chameleon'
+OK bm_chaos
+OK bm_comprehensions
+OK bm_concurrent_imap
+OK bm_coroutines
+FAIL arm bm_coverage: ModuleNotFoundError: No module named 'coverage'
+FAIL x86 bm_coverage: ModuleNotFoundError: No module named 'coverage'
+FAIL arm bm_crypto_pyaes: ModuleNotFoundError: No module named 'pyaes'
+FAIL x86 bm_crypto_pyaes: ModuleNotFoundError: No module named 'pyaes'
+FAIL arm bm_dask: ModuleNotFoundError: No module named 'dask'
+FAIL x86 bm_dask: ModuleNotFoundError: No module named 'dask'
+OK bm_deepcopy
+OK bm_deltablue
+FAIL arm bm_django_template: ModuleNotFoundError: No module named 'django'
+FAIL x86 bm_django_template: ModuleNotFoundError: No module named 'django'
+FAIL arm bm_docutils: ModuleNotFoundError: No module named 'docutils'
+FAIL x86 bm_docutils: ModuleNotFoundError: No module named 'docutils'
+FAIL arm bm_dulwich_log: ModuleNotFoundError: No module named 'dulwich'
+FAIL x86 bm_dulwich_log: ModuleNotFoundError: No module named 'dulwich'
+OK bm_fannkuch
+OK bm_float
+OK bm_gc_collect
+OK bm_gc_traversal
+OK bm_generators
+FAIL arm bm_genshi: ModuleNotFoundError: No module named 'genshi'
+FAIL x86 bm_genshi: ModuleNotFoundError: No module named 'genshi'
+OK bm_go
+OK bm_hexiom
+FAIL arm bm_hg_startup: ModuleNotFoundError: No module named 'pyperformance'
+FAIL x86 bm_hg_startup: ModuleNotFoundError: No module named 'pyperformance'
+FAIL arm bm_html5lib: ModuleNotFoundError: No module named 'html5lib'
+FAIL x86 bm_html5lib: ModuleNotFoundError: No module named 'html5lib'
+OK bm_json_dumps
+OK bm_json_loads
+OK bm_logging
+FAIL arm bm_mako: ModuleNotFoundError: No module named 'mako'
+FAIL x86 bm_mako: ModuleNotFoundError: No module named 'mako'
+OK bm_mdp
+OK bm_meteor_contest
+OK bm_nbody
+OK bm_nqueens
+OK bm_pathlib
+FAIL arm bm_pickle: run_benchmark.py: error: the following arguments are required: benchmark
+FAIL x86 bm_pickle: run_benchmark.py: error: the following arguments are required: benchmark
+OK bm_pidigits
+OK bm_pprint
+OK bm_pyflate
+OK bm_python_startup
+OK bm_raytrace
+OK bm_regex_compile
+OK bm_regex_dna
+OK bm_regex_effbot
+OK bm_regex_v8
+OK bm_richards
+OK bm_richards_super
+OK bm_scimark
+OK bm_spectral_norm
+FAIL arm bm_sqlalchemy_declarative: ModuleNotFoundError: No module named 'sqlalchemy'
+FAIL x86 bm_sqlalchemy_declarative: ModuleNotFoundError: No module named 'sqlalchemy'
+FAIL arm bm_sqlalchemy_imperative: ModuleNotFoundError: No module named 'sqlalchemy'
+FAIL x86 bm_sqlalchemy_imperative: ModuleNotFoundError: No module named 'sqlalchemy'
+FAIL arm bm_sqlglot: ModuleNotFoundError: No module named 'sqlglot'
+FAIL x86 bm_sqlglot: ModuleNotFoundError: No module named 'sqlglot'
+OK bm_sqlite_synth
+FAIL arm bm_sympy: ModuleNotFoundError: No module named 'sympy'
+FAIL x86 bm_sympy: ModuleNotFoundError: No module named 'sympy'
+OK bm_telco
+FAIL arm bm_tomli_loads: ModuleNotFoundError: No module named 'tomli'
+FAIL x86 bm_tomli_loads: ModuleNotFoundError: No module named 'tomli'
+FAIL arm bm_tornado_http: ModuleNotFoundError: No module named 'tornado'
+FAIL x86 bm_tornado_http: ModuleNotFoundError: No module named 'tornado'
+OK bm_typing_runtime_protocols
+OK bm_unpack_sequence
+OK bm_xml_etree

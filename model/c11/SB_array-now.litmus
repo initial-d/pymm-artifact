@@ -1,0 +1,15 @@
+C SB+array-now
+
+{ x=0; y=0; }
+
+P0 (int* x, int* y) {
+  *x = 1;
+  int r0 = *y;
+}
+
+P1 (int* x, int* y) {
+  *y = 1;
+  int r0 = *x;
+}
+
+exists (0:r0=0 /\ 1:r0=0)

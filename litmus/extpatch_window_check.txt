@@ -1,0 +1,24 @@
+# Why Table 3's fix column (two-macro build) carries over to the three-macro patch
+# 2026-10-26 15:19:04
+## Sites of the third macro FT_ATOMIC_LOAD_PTR_MANAGED (non-define):
+cpython-3.14.9/Python/bytecodes.c:1814:            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/bytecodes.c:1833:            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/bytecodes.c:2384:            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+cpython-3.14.9/Python/generated_cases.c.h:8517:                PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+cpython-3.14.9/Python/generated_cases.c.h:9431:                PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/generated_cases.c.h:9498:                PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/executor_cases.c.h:2429:            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/executor_cases.c.h:2466:            PyObject *res_o = FT_ATOMIC_LOAD_PTR_MANAGED(entries[index].me_value);
+cpython-3.14.9/Python/executor_cases.c.h:3335:            PyObject *attr_o = FT_ATOMIC_LOAD_PTR_MANAGED(ep->me_value);
+## Enclosing instructions:
+1814:         op(_LOAD_GLOBAL_MODULE, (version/1, unused/1, index/1 -- res))
+1833:         op(_LOAD_GLOBAL_BUILTINS, (version/1, index/1 -- res))
+2384:         op(_LOAD_ATTR_MODULE, (dict_version/2, index/1, owner -- attr)) {
+## Specialised opcodes in the SB litmus bodies (litmus/litmus.py build(), arm-fix, after warm-up):
+list ['BINARY_OP_ADD_INT', 'BINARY_OP_SUBSCR_LIST_INT', 'CALL_BUILTIN_CLASS', 'COMPARE_OP_INT', 'END_FOR', 'FOR_ITER_RANGE', 'GET_ITER', 'JUMP_BACKWARD', 'LOAD_CONST_IMMORTAL', 'LOAD_FAST_BORROW', 'LOAD_FAST_BORROW_LOAD_FAST_BORROW', 'LOAD_GLOBAL_BUILTIN', 'LOAD_SMALL_INT', 'NOP', 'NOT_TAKEN', 'POP_ITER', 'POP_JUMP_IF_FALSE', 'RESUME_CHECK', 'RETURN_VALUE', 'STORE_FAST', 'STORE_SUBSCR_LIST_INT']
+  LOAD_GLOBAL* args: ['range']
+attrb ['BINARY_OP_ADD_INT', 'BINARY_OP_SUBSCR_LIST_INT', 'CALL_BUILTIN_CLASS', 'COMPARE_OP_INT', 'END_FOR', 'FOR_ITER_RANGE', 'GET_ITER', 'JUMP_BACKWARD', 'LOAD_ATTR_INSTANCE_VALUE', 'LOAD_CONST_IMMORTAL', 'LOAD_FAST_BORROW', 'LOAD_FAST_BORROW_LOAD_FAST_BORROW', 'LOAD_GLOBAL_BUILTIN', 'LOAD_SMALL_INT', 'NOT_TAKEN', 'POP_ITER', 'POP_JUMP_IF_FALSE', 'RESUME_CHECK', 'RETURN_VALUE', 'STORE_ATTR_INSTANCE_VALUE', 'STORE_FAST', 'STORE_FAST_LOAD_FAST', 'STORE_SUBSCR_LIST_INT']
+  LOAD_GLOBAL* args: ['range']
+slotb ['BINARY_OP_ADD_INT', 'BINARY_OP_SUBSCR_LIST_INT', 'CALL_BUILTIN_CLASS', 'COMPARE_OP_INT', 'END_FOR', 'FOR_ITER_RANGE', 'GET_ITER', 'JUMP_BACKWARD', 'LOAD_ATTR_SLOT', 'LOAD_CONST_IMMORTAL', 'LOAD_FAST_BORROW', 'LOAD_FAST_BORROW_LOAD_FAST_BORROW', 'LOAD_GLOBAL_BUILTIN', 'LOAD_SMALL_INT', 'NOT_TAKEN', 'POP_ITER', 'POP_JUMP_IF_FALSE', 'RESUME_CHECK', 'RETURN_VALUE', 'STORE_ATTR_SLOT', 'STORE_FAST', 'STORE_FAST_LOAD_FAST', 'STORE_SUBSCR_LIST_INT']
+  LOAD_GLOBAL* args: ['range']
+## Conclusion: the only global load is 'range', executed once before the loop; no managed-load site of the third macro lies in the store-load window.

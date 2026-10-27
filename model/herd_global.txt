@@ -1,0 +1,45 @@
+c11/MP_global-base.litmus | rc11.cat | Observation MP+global-base Sometimes 1 3
+c11/MP_global-fix.litmus | rc11.cat | Observation MP+global-fix Sometimes 1 3
+c11/MP_global-fix2.litmus | rc11.cat | Observation MP+global-fix2 Never 0 3
+c11/MP_global-fixcf.litmus | rc11.cat | Observation MP+global-fixcf Sometimes 1 3
+c11/R_global-base.litmus | rc11.cat | Observation R+global-base Never 0 11
+c11/R_global-fix.litmus | rc11.cat | Observation R+global-fix Never 0 11
+c11/R_global-fix2.litmus | rc11.cat | Observation R+global-fix2 Never 0 11
+c11/R_global-fixcf.litmus | rc11.cat | Observation R+global-fixcf Sometimes 2 13
+c11/SB_global-base.litmus | rc11.cat | Observation SB+global-base Sometimes 1 3
+c11/SB_global-fix.litmus | rc11.cat | Observation SB+global-fix Sometimes 1 3
+c11/SB_global-fix2.litmus | rc11.cat | Observation SB+global-fix2 Never 0 3
+c11/SB_global-fixcf.litmus | rc11.cat | Observation SB+global-fixcf Sometimes 1 3
+x86/MP_global-base.litmus | x86tso.cat | Observation MP+global-base Never 0 3
+x86/MP_global-fix.litmus | x86tso.cat | Observation MP+global-fix Never 0 3
+x86/MP_global-fix2.litmus | x86tso.cat | Observation MP+global-fix2 Never 0 3
+x86/MP_global-fixcf.litmus | x86tso.cat | Observation MP+global-fixcf Never 0 3
+x86/R_global-base.litmus | x86tso.cat | Observation R+global-base Never 0 51
+x86/R_global-fix.litmus | x86tso.cat | Observation R+global-fix Never 0 83
+x86/R_global-fix2.litmus | x86tso.cat | Observation R+global-fix2 Never 0 83
+x86/R_global-fixcf.litmus | x86tso.cat | Observation R+global-fixcf Never 0 44
+x86/SB_global-base.litmus | x86tso.cat | Observation SB+global-base Never 0 3
+x86/SB_global-fix.litmus | x86tso.cat | Observation SB+global-fix Never 0 3
+x86/SB_global-fix2.litmus | x86tso.cat | Observation SB+global-fix2 Never 0 3
+x86/SB_global-fixcf.litmus | x86tso.cat | Observation SB+global-fixcf Never 0 3
+aarch64/MP_global-base.litmus | aarch64.cat | Observation MP+global-base Sometimes 1 3
+aarch64/MP_global-fix.litmus | aarch64.cat | Observation MP+global-fix Sometimes 1 3
+aarch64/MP_global-fix2.litmus | aarch64.cat | Observation MP+global-fix2 Never 0 3
+aarch64/MP_global-fixcf.litmus | aarch64.cat | Observation MP+global-fixcf Sometimes 1 3
+aarch64/R_global-base.litmus | aarch64.cat | Observation R+global-base Never 0 11
+aarch64/R_global-fix.litmus | aarch64.cat | Observation R+global-fix Never 0 11
+aarch64/R_global-fix2.litmus | aarch64.cat | Observation R+global-fix2 Never 0 11
+aarch64/R_global-fixcf.litmus | aarch64.cat | Observation R+global-fixcf Sometimes 2 13
+aarch64/SB_global-base.litmus | aarch64.cat | Observation SB+global-base Never 0 3
+aarch64/SB_global-fix.litmus | aarch64.cat | Observation SB+global-fix Never 0 3
+aarch64/SB_global-fix2.litmus | aarch64.cat | Observation SB+global-fix2 Never 0 3
+aarch64/SB_global-fixcf.litmus | aarch64.cat | Observation SB+global-fixcf Sometimes 1 3
+global/c11/MP_global-fix2cf.litmus | rc11.cat | States 3 Observation MP+global-fix2cf Never 0 3 
+global/c11/R_global-fix2cf.litmus | rc11.cat | States 3 Observation R+global-fix2cf Never 0 13 
+global/c11/SB_global-fix2cf.litmus | rc11.cat | States 3 Observation SB+global-fix2cf Never 0 3 
+global/x86/MP_global-fix2cf.litmus | x86tso.cat | States 3 Observation MP+global-fix2cf Never 0 3 
+global/x86/R_global-fix2cf.litmus | x86tso.cat | States 3 Observation R+global-fix2cf Never 0 44 
+global/x86/SB_global-fix2cf.litmus | x86tso.cat | States 3 Observation SB+global-fix2cf Never 0 3 
+global/aarch64/MP_global-fix2cf.litmus | aarch64.cat | States 3 Observation MP+global-fix2cf Never 0 3 
+global/aarch64/R_global-fix2cf.litmus | aarch64.cat | States 3 Observation R+global-fix2cf Never 0 11 
+global/aarch64/SB_global-fix2cf.litmus | aarch64.cat | States 3 Observation SB+global-fix2cf Never 0 3 

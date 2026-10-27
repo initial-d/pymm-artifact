@@ -1,0 +1,4 @@
+3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=619550 10.4s
+3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=6 10.8s
+3.14.9 gil=False MP global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=1078737 2.6s
+3.14.9 gil=False SB global n=3000000 forbidden=0 (0.00e+00) overlap(both new)=15 2.6s

@@ -1,0 +1,9 @@
+X86 IRIW+attrb-base
+{ x=0; y=0; mx=0; my=0; ox=0; oy=0; }
+ P0            | P1            | P2          | P3          ;
+ MOV ESI,$1    | MOV ESI,$1    | MOV EAX,[x] | MOV EAX,[y] ;
+ XCHG [mx],ESI | XCHG [my],ESI | MOV EBX,[y] | MOV EBX,[x] ;
+ MOV [x],$1    | MOV [y],$1    |             |             ;
+ MOV ESI,$0    | MOV ESI,$0    |             |             ;
+ XCHG [mx],ESI | XCHG [my],ESI |             |             ;
+exists (2:EAX=1 /\ 2:EBX=0 /\ 3:EAX=1 /\ 3:EBX=0)
