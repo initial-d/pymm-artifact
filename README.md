@@ -13,7 +13,7 @@ Every number in the paper comes from a file in this repository. The paper source
 | `model/pymm.cat` | The proposed two-tier model in herd7's `cat` language | §6 |
 | `model/gen_litmus.py`, `gen_hw.py`, `gen_global.py`, `gen_py.py` | Generators for the C11, x86 and AArch64 litmus tests | §5 |
 | `model/{c11,x86,aarch64,global,mixed,py}/` | Generated litmus tests | §5–7 |
-| `model/herd_*.txt`, `herd_rerun.txt`, `pymm_results.txt` | herd7 verdicts (Tables 4, 5); `herd_rerun_running.txt` records the one cell without a verdict | §5–6 |
+| `model/herd_*.txt`, `herd_rerun.txt`, `pymm_results.txt` | herd7 verdicts (Tables 4, 5); `herd_rerun_running.txt` records the C11 2+2W attr-base run stopped after 39.9 h; `herd_c11_2+2W_attr-base_derived.txt` derives that cell (forbid) from the attr_b cell | §5–6 |
 | `model/execgraph/` | herd7 witnesses behind Figure 3 | §5 |
 | `model/*_disasm_counts.txt`, `native_x86/disasm_counts.txt` | Instruction counts of the builds | §7 |
 | `litmus/litmus.py`, `litmus_global.py` | Python litmus harness | §4 |

@@ -1,0 +1,43 @@
+# C11 2+2W attr-base under rc11.cat: verdict by restriction, not by herd7 enumeration
+# 2026-10-27. herd7 7.58 ran `-speedcheck fast -model rc11.cat c11/2+2W_attr-base.litmus` for
+# 39.9 h (2026-10-25 19:43 -> 2026-10-27 11:39) without a verdict and was stopped
+# (herd_rerun_running.txt). The verdict below follows from a completed herd7 run on a sub-test.
+
+## Premise (herd_rerun.txt, herd7 7.58, same rc11.cat):
+c11/2+2W_attrb-base.litmus | rc11.cat | Observation 2+2W+attrb-base Never 0 0 | 10141s
+
+## The two tests differ only by four seq_cst RMWs on ox/oy (diff attrb-base -> attr-base):
+1c1
+< C 2+2W+attrb-base
+---
+> C 2+2W+attr-base
+8a9
+>   atomic_fetch_add_explicit(ox, -1, memory_order_seq_cst);
+11a13
+>   atomic_fetch_add_explicit(oy, -1, memory_order_seq_cst);
+17a20
+>   atomic_fetch_add_explicit(oy, -1, memory_order_seq_cst);
+20a24
+>   atomic_fetch_add_explicit(ox, -1, memory_order_seq_cst);
+ox, oy are disjoint from x, y, mx, my; the RMW results are unused; the outcome mentions x, y only.
+
+## Claim: rc11.cat forbids [x]=1 /\ [y]=1 for 2+2W attr-base.
+Suppose G is an rc11-consistent execution of attr-base with x=1, y=1. Let G' be G restricted to
+the events not on ox/oy. G' is a candidate execution of attrb-base: po restricted is attrb-base's
+program order, and rf, co on x, y, mx, my are unchanged (no event on those locations is removed),
+so the final values of x and y are unchanged. Every relation rc11.cat builds is defined positively
+from po, rf, co, rmw, loc and event sets (rb = (rf^-1;mo)\id and sbl = sb\loc subtract only id
+and loc, which restriction preserves), so each relation of G' is contained in the same relation of
+G restricted to G''s events:
+  sb, rf, mo, rmw, myrmw, rb, eco          restricted from G
+  rs, sw, hb (= (sb|sw)+), hbl, sbl, scb   paths in G' are paths in G
+  pscb (SC events of G' are SC events of G), pscf (empty: no fences)
+Hence each axiom holds in G' because it holds in G:
+  irreflexive hb;eco?        irreflexive (myrmw;eco)     empty (myrmw & (rb;mo))
+  acyclic psc                acyclic (sb|rf)
+and Dr is empty in both (all accesses are atomic: dr excludes A*A).
+So G' is an rc11-consistent execution of attrb-base with x=1, y=1, contradicting the premise.
+Therefore 2+2W attr-base is forbidden under rc11.cat.  Verdict: forbid (derived).
+
+## Cross-check: the x86-TSO version of the same test, enumerated by herd7 (herd_rerun.txt):
+x86/2+2W_attr-base.litmus | x86tso.cat | Observation 2+2W+attr-base Never 0 0 | 44169s

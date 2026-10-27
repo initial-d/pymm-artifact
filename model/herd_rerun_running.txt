@@ -1,3 +1,4 @@
-2026年10月26日 星期一 15时59分52秒 CST
-  PID  ELAPSED STARTED                      COMMAND
-21144 20:16:17 日 10月/25 19:43:35 2026   ../opamroot/herd/bin/herd7 -speedcheck fast -model rc11.cat c11/2+2W_attr-base.litmus
+# C11 2+2W attr-base: herd7 run stopped without a verdict
+2026-10-27 11:39:01
+  PID     ELAPSED STARTED                      COMMAND
+21144 01-15:55:26 日 10月/25 19:43:35 2026   ../opamroot/herd/bin/herd7 -speedcheck fast -model rc11.cat c11/2+2W_attr-base.litmus
